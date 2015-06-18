@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 import rospy
 from ardrone_autonomy.msg import Navdata
 
