@@ -44,3 +44,21 @@ def forward(speed):
 
 def backward(speed):
     pub_velocity.publish(Twist(Vector3(-speed, 0, 0), Vector3(0, 0, 0)))
+
+def left(speed):
+    pub_velocity.publish(Twist(Vector3(0, speed, 0), Vector3(0, 0, 0)))
+
+def right(speed):
+    pub_velocity.publish(Twist(Vector3(0, -speed, 0), Vector3(0, 0, 0)))
+
+def up(speed):
+    pub_velocity.publish(Twist(Vector3(0, 0, speed), Vector3(0, 0, 0)))
+
+def down(speed):
+    pub_velocity.publish(Twist(Vector3(0, 0, -speed), Vector3(0, 0, 0)))
+
+def clockwise(speed):
+    pub_velocity.publish(Twist(Vector3(0, 0, 0), Vector3(0, 0, -speed)))
+
+def counterclockwise(speed):
+    pub_velocity.publish(Twist(Vector3(0, 0, 0), Vector3(0, 0, speed)))
