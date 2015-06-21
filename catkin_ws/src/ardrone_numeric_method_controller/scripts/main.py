@@ -15,3 +15,7 @@ __status__ = "Development"
 from util import *
 
 
+PATH_TO_REFERENCES = "/home/m//PycharmProjects/ROSAutonomousFlight/catkin_ws/src/ardrone_numeric_method_controller/" \
+                     "scripts/referenceAndConstantFiles/"
+
+get_array_from_file(PATH_TO_REFERENCES + 'x_ref_n.txt')
