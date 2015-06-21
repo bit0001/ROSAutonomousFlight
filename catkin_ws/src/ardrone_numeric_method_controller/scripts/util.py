@@ -4,7 +4,6 @@
 
 _author__ = "L. Miguel Vargas F."
 __copyright__ = "Copyright 2015, National Polytechnic School, Ecuador"
-__credits__ = ["Mani Monajjemi Rob Knight", "Sika Abarca"]
 __license__ = "Noncommercial"
 __version__ = "1.0.0"
 __maintainer__ = "L. Miguel Vargas F."
@@ -66,5 +65,4 @@ def counterclockwise(speed):
 def get_array_from_file(pathToFile):
     with open(pathToFile) as file:
         content = file.read()
-
-    print(content)
+    return content.split('\n')[:-1]
