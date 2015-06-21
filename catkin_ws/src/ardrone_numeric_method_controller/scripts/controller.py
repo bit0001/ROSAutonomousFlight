@@ -54,6 +54,8 @@ class ARDroneController:
             Vector3(linear_velocity[0], linear_velocity[1], linear_velocity[2]),
             Vector3(angular_velocity[0], angular_velocity[1], angular_velocity[2])))
 
+
+class ARDroneBasicController(ARDroneController):
     def move_forward(self, speed):
         self.send_linear_and_angular_velocities([speed, 0, 0], [0, 0, 0])
 
