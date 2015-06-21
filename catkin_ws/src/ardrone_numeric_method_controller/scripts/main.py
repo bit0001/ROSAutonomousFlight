@@ -23,16 +23,29 @@ if __name__ == '__main__':
 
     rospy.sleep(1)
     print("ready!")
-    # controller.send_reset()
+    controller.send_flat_trim()
 
     controller.send_take_off()
     rospy.sleep(5.0)
 
-    controller.move_clockwise(0.30)
-    rospy.sleep(5.0)
+    r = rospy.Rate(10)  # 10hz <=> 100 ms
+    i = 0
+    speed = 0.1
+    while not rospy.is_shutdown():
+        controller.move_forward(0.05)
 
-    controller.move_counterclockwise(0.4)
-    rospy.sleep(4.0)
+        i += 1
+
+        print('For i =', i)
+        controller.print_data_test()
+
+        if i == 50:
+            speed *= -1
+        elif i >= 100:
+            break
+
+        r.sleep()
+
     controller.send_land()
 
     save_position_into_txt(x_ref_n, "x_n")
