@@ -22,14 +22,14 @@ PATH_TO_REFERENCES = "/home/m//PycharmProjects/ROSAutonomousFlight/catkin_ws/src
 
 def string_array_to_number_array(string_array):
     number_array = []
-    for i in string_array:
-        number_array.append(float(i))
+    for item in string_array:
+        number_array.append(float(item))
 
     return number_array
 
-x_ref_n = string_array_to_number_array(get_array_from_file(PATH_TO_REFERENCES + 'x_ref_n.txt'))
-y_ref_n = string_array_to_number_array(get_array_from_file(PATH_TO_REFERENCES + 'y_ref_n.txt'))
-z_ref_n = string_array_to_number_array(get_array_from_file(PATH_TO_REFERENCES + 'z_ref_n.txt'))
-x_ref_np1 = string_array_to_number_array(get_array_from_file(PATH_TO_REFERENCES + 'x_ref_np1.txt'))
-y_ref_np1 = string_array_to_number_array(get_array_from_file(PATH_TO_REFERENCES + 'y_ref_np1.txt'))
-z_ref_np1 = string_array_to_number_array(get_array_from_file(PATH_TO_REFERENCES + 'z_ref_np1.txt'))
+x_ref_n = string_array_to_number_array(get_array_from_file(PATH_TO_REFERENCES + "x_ref_n.txt"))
+y_ref_n = string_array_to_number_array(get_array_from_file(PATH_TO_REFERENCES + "y_ref_n.txt"))
+z_ref_n = string_array_to_number_array(get_array_from_file(PATH_TO_REFERENCES + "z_ref_n.txt"))
+x_ref_np1 = string_array_to_number_array(get_array_from_file(PATH_TO_REFERENCES + "x_ref_np1.txt"))
+y_ref_np1 = string_array_to_number_array(get_array_from_file(PATH_TO_REFERENCES + "y_ref_np1.txt"))
+z_ref_np1 = string_array_to_number_array(get_array_from_file(PATH_TO_REFERENCES + "z_ref_np1.txt"))
