@@ -12,10 +12,7 @@ __email__ = "lmiguelvargasf@gmail.com"
 __status__ = "Development"
 
 from references import *
-from util import *
-
-PATH_TO_POSITIONS_AND_TIME = "/home/m//PycharmProjects/ROSAutonomousFlight/catkin_ws/src/" \
-                             "ardrone_numeric_method_controller/scripts/positionsAndTime/"
+from position import save_position_into_txt
 
 print("x_ref_n:\n", x_ref_n)
 print("y_ref_n:\n", y_ref_n)
@@ -24,6 +21,8 @@ print('x_ref_np1:\n', x_ref_np1)
 print('y_ref_np1:\n', y_ref_np1)
 print('z_ref_np1:\n', z_ref_np1)
 
-save_array_into_file(x_ref_n, PATH_TO_POSITIONS_AND_TIME + 'x_n.txt')
-save_array_into_file(y_ref_n, PATH_TO_POSITIONS_AND_TIME + 'y_n.txt')
-save_array_into_file(z_ref_n, PATH_TO_POSITIONS_AND_TIME + 'z_n.txt')
+
+
+save_position_into_txt(x_ref_n, "x_n")
+save_position_into_txt(y_ref_n, "y_n")
+save_position_into_txt(z_ref_n, "z_n")

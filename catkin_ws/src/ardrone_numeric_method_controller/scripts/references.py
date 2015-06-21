@@ -13,12 +13,11 @@ __maintainer__ = "L. Miguel Vargas F."
 __email__ = "lmiguelvargasf@gmail.com"
 __status__ = "Development"
 
-
-
 from util import *
 
 PATH_TO_REFERENCES = "/home/m//PycharmProjects/ROSAutonomousFlight/catkin_ws/src/ardrone_numeric_method_controller/" \
                      "scripts/referenceAndConstantFiles/"
+
 
 def string_array_to_number_array(string_array):
     number_array = []
@@ -26,6 +25,7 @@ def string_array_to_number_array(string_array):
         number_array.append(float(item))
 
     return number_array
+
 
 x_ref_n = string_array_to_number_array(get_array_from_file(PATH_TO_REFERENCES + "x_ref_n.txt"))
 y_ref_n = string_array_to_number_array(get_array_from_file(PATH_TO_REFERENCES + "y_ref_n.txt"))
