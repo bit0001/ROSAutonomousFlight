@@ -23,10 +23,16 @@ if __name__ == '__main__':
 
     rospy.sleep(1)
     print("ready!")
-    controller.send_reset()
+    # controller.send_reset()
 
     controller.send_take_off()
-    rospy.sleep(10.0)
+    rospy.sleep(5.0)
+
+    controller.move_clockwise(0.30)
+    rospy.sleep(5.0)
+
+    controller.move_counterclockwise(0.4)
+    rospy.sleep(4.0)
     controller.send_land()
 
     save_position_into_txt(x_ref_n, "x_n")

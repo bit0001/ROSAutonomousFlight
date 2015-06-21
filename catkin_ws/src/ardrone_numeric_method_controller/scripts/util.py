@@ -4,18 +4,10 @@
 
 
 import rospy
-from std_msgs.msg import Empty
-import std_srvs.srv
 from geometry_msgs.msg import Twist, Vector3
 
 # Publishers
 pub_velocity = rospy.Publisher('/cmd_vel', Twist, queue_size=10)
-
-def forward(speed):
-    pub_velocity.publish(Twist(Vector3(speed, 0, 0), Vector3(0, 0, 0)))
-
-def backward(speed):
-    pub_velocity.publish(Twist(Vector3(-speed, 0, 0), Vector3(0, 0, 0)))
 
 def left(speed):
     pub_velocity.publish(Twist(Vector3(0, speed, 0), Vector3(0, 0, 0)))
