@@ -14,18 +14,23 @@ __status__ = "Development"
 from references import *
 from position import save_position_into_txt
 from constants import *
+from controller import *
 
-print("x_ref_n:\n", x_ref_n)
-print("y_ref_n:\n", y_ref_n)
-print('z_ref_n:\n', z_ref_n)
-print('x_ref_np1:\n', x_ref_np1)
-print('y_ref_np1:\n', y_ref_np1)
-print('z_ref_np1:\n', z_ref_np1)
+controller = ARDroneController()
 
-print('This is K_V_XY:', K_V_XY)
-print('This is K_V_Z:', K_V_Z)
-print('This is K_OMEGA_PSI:', K_OMEGA_PSI)
+if __name__ == '__main__':
+    rospy.init_node('controller_node', anonymous=True)
 
-save_position_into_txt(x_ref_n, "x_n")
-save_position_into_txt(y_ref_n, "y_n")
-save_position_into_txt(z_ref_n, "z_n")
+    rospy.sleep(1)
+    print("ready!")
+    controller.send_reset()
+
+    controller.send_take_off()
+    rospy.sleep(10.0)
+    controller.send_land()
+
+    save_position_into_txt(x_ref_n, "x_n")
+    save_position_into_txt(y_ref_n, "y_n")
+    save_position_into_txt(z_ref_n, "z_n")
+
+    print("done!")
