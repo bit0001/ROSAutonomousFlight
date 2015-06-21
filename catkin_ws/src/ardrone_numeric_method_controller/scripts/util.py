@@ -62,7 +62,7 @@ def clockwise(speed):
 def counterclockwise(speed):
     pub_velocity.publish(Twist(Vector3(0, 0, 0), Vector3(0, 0, speed)))
 
-def get_array_from_file(pathToFile):
-    with open(pathToFile) as file:
-        content = file.read()
+def get_array_from_file(path_to_file):
+    with open(path_to_file) as opened_file:
+        content = opened_file.read()
     return content.split('\n')[:-1]
