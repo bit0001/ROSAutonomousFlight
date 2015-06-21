@@ -5,18 +5,8 @@ This is module contains the references that will be loaded from txt files. These
 either by defining a trajectory in MATLAB or bye drawing a trajectory in the mobile app.
 """
 
-_author__ = "L. Miguel Vargas F."
-__copyright__ = "Copyright 2015, National Polytechnic School, Ecuador"
-__license__ = "Noncommercial"
-__version__ = "1.0.0"
-__maintainer__ = "L. Miguel Vargas F."
-__email__ = "lmiguelvargasf@gmail.com"
-__status__ = "Development"
-
 from util import *
-
-PATH_TO_REFERENCES = "/home/m//PycharmProjects/ROSAutonomousFlight/catkin_ws/src/ardrone_numeric_method_controller/" \
-                     "scripts/referenceAndConstantFiles/"
+from constants import PATH_TO_REFERENCES
 
 
 def string_array_to_number_array(string_array):
