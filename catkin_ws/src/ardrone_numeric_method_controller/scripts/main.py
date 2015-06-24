@@ -23,7 +23,10 @@ def save_positions():
     save_list_into_txt(x_n, "x_n")
     save_list_into_txt(y_n, "y_n")
     save_list_into_txt(z_n, "z_n")
+    save_list_into_txt(t_n, "t_n")
 
+def compute_control_action(reference_np1, reference_n, current_n, control_constant):
+    return reference_np1 - control_constant * (reference_n - current_n) - current_n
 
 def follow_trajectory():
     sampling_frequency = rospy.Rate(1 / T0)
@@ -50,13 +53,12 @@ def follow_trajectory():
         z_n.append(controller.required_navigation_data["z"])
         psi_n.append(controller.required_navigation_data["psi"])
 
-        psi_ez_n.append(math.atan2(y_ref_np1[i] - K_V_XY * (y_ref_n[i] - y_n[-1]) - y_n[-1],
-                                   x_ref_np1[i] - K_V_XY * (x_ref_n[i] - x_n[-1]) - x_n[-1]))
+        y_control_action = compute_control_action(y_ref_np1[i], y_ref_n[i], y_n[-1], K_V_XY)
+        x_control_action = compute_control_action(x_ref_np1[i], x_ref_n[i], x_n[-1], K_V_XY)
+        psi_ez_n.append(math.atan2(y_control_action, x_control_action))
 
-        v_xy = (1 / T0) * ((x_ref_n[i] - K_V_XY * (x_ref_n[i] - x_n[-1]) - x_n[-1]) * math.cos(psi_ez_n[-1]) +
-                           (y_ref_np1[i] - K_V_XY * (y_ref_n[i] - y_n[-1]) - y_n[-1]) * math.sin(psi_ez_n[-1]))
-
-        v_z = (1 / T0) * (z_ref_n[i] - K_V_Z * (z_ref_n[i] - z_n[-1]) - z_n[-1])
+        v_xy = (1 / T0) * (x_control_action * math.cos(psi_ez_n[-1]) + y_control_action * math.sin(psi_ez_n[-1]))
+        v_z = (1 / T0) * compute_control_action(z_ref_np1[i], z_ref_n[i], z_n[-1], K_V_Z)
 
         try:
             omega_psi = (1 / T0) * (psi_ez_n[-1] - K_OMEGA_PSI * (psi_ez_n[-2] - psi_n[-2]) - psi_n[-2])
