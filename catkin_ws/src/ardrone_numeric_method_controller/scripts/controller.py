@@ -13,9 +13,8 @@ QUEUE_SIZE = 10
 class ARDroneController:
     def __init__(self):
         self.navigation_data = rospy.Subscriber("/ardrone/navdata", Navdata, self.callback_navigation_data)
-        self.vx = 0
-        self.vy = 0
-        self.vz = 0
+        self.required_navigation_data = {'vx': None, 'vy': None, 'z': None, 'psi': None}
+        self.last_time = None
 
         self.pub_takeoff = rospy.Publisher("/ardrone/takeoff", Empty, queue_size=QUEUE_SIZE)
         self.pub_land = rospy.Publisher("/ardrone/land", Empty, queue_size=QUEUE_SIZE)
@@ -23,14 +22,10 @@ class ARDroneController:
         self.pub_velocity = rospy.Publisher("/cmd_vel", Twist, queue_size=QUEUE_SIZE)
 
     def callback_navigation_data(self, data):
-        self.vx = data.vx / 1e3
-        self.vy = data.vy / 1e3
-        self.vz = data.vz / 1e3
-
-    def print_data_test(self):
-        print("Vx: ", self.vx)
-        print("Vy: ", self.vy)
-        print("Vz: ", self.vz)
+        self.required_navigation_data['vx'] = data.vx / 1e3
+        self.required_navigation_data['vy'] = data.vy / 1e3
+        self.required_navigation_data['z'] = data.altd
+        self.required_navigation_data['psi'] = data.rotZ
 
     def send_take_off(self):
         print("Take off...")
