@@ -17,6 +17,7 @@ from position import *
 from constants import *
 from controller import *
 
+controller = ARDroneController()
 
 def save_positions():
     save_position_into_txt(x_n, "x_n")
@@ -50,7 +51,7 @@ def follow_trajectory():
         psi_n.append(controller.required_navigation_data['psi'])
 
         psi_ez_n.append(math.atan2(y_ref_np1[i] - K_V_XY * (y_ref_n[i] - y_n[-1]) - y_n[-1],
-                                 x_ref_np1[i] - K_V_XY * (x_ref_n[i] - x_n[-1]) - x_n[-1]))
+                                   x_ref_np1[i] - K_V_XY * (x_ref_n[i] - x_n[-1]) - x_n[-1]))
 
         v_xy = (1 / T0) * ((x_ref_n[i] - K_V_XY * (x_ref_n[i] - x_n[-1]) - x_n[-1]) * math.cos(psi_ez_n[-1]) +
                            (y_ref_np1[i] - K_V_XY * (y_ref_n[i] - y_n[-1]) - y_n[-1]) * math.sin(psi_ez_n[-1]))
@@ -62,10 +63,9 @@ def follow_trajectory():
         except IndexError:
             omega_psi = (1 / T0) * (psi_ez_n[-1])
 
-        controller.send_linear_and_angular_velocities([v_xy, 0, v_z], [0, 0, omega_psi])
+        controller.send_linear_and_angular_velocities([v_xy / V_XY_MAX, 0, v_z / V_Z_MAX],
+                                                      [0, 0, omega_psi / OMEGA_PSI_MAX])
         sampling_frequency.sleep()
-
-controller = ARDroneController()
 
 if __name__ == '__main__':
     rospy.init_node('controller_node', anonymous=True)
