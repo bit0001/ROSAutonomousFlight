@@ -5,6 +5,7 @@
 from util import save_array_into_file
 from constants import PATH_TO_POSITIONS_AND_TIME
 
+t_n = []
 x_n = []
 y_n = []
 z_n = []

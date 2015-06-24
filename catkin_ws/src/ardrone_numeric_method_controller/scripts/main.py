@@ -35,6 +35,7 @@ def follow_trajectory():
             dt = (current_time - controller.last_time)
             controller.last_time = current_time
 
+        t_n.append(i * T0)
         dx = dt * controller.required_navigation_data['vx']
         dy = dt * controller.required_navigation_data['vy']
 
@@ -51,8 +52,8 @@ def follow_trajectory():
         psi_ez_n.append(math.atan2(y_ref_np1[i] - K_V_XY * (y_ref_n[i] - y_n[-1]) - y_n[-1],
                                  x_ref_np1[i] - K_V_XY * (x_ref_n[i] - x_n[-1]) - x_n[-1]))
 
-        v_xy = (1 / T0) * ((x_ref_n[i] - K_V_XY * (x_ref_n[i] - x_n[-1]) - x_n[-1]) * math.cos(psi_ez) +
-                           (y_ref_np1[i] - K_V_XY * (y_ref_n[i] - y_n[-1]) - y_n[-1]) * math.sin(psi_ez))
+        v_xy = (1 / T0) * ((x_ref_n[i] - K_V_XY * (x_ref_n[i] - x_n[-1]) - x_n[-1]) * math.cos(psi_ez_n[-1]) +
+                           (y_ref_np1[i] - K_V_XY * (y_ref_n[i] - y_n[-1]) - y_n[-1]) * math.sin(psi_ez_n[-1]))
 
         v_z = (1 / T0) * (z_ref_n[i] - K_V_Z * (z_ref_n[i] - z_n[-1]) - z_n[-1])
 
