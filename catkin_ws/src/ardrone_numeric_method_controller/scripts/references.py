@@ -9,17 +9,17 @@ from util import *
 from constants import PATH_TO_REFERENCES
 
 
-def string_array_to_number_array(string_array):
-    number_array = []
+def string_list_to_float_list(string_array):
+    float_list = []
     for item in string_array:
-        number_array.append(float(item))
+        float_list.append(float(item))
 
-    return number_array
+    return float_list
 
 
-x_ref_n = string_array_to_number_array(get_array_from_file(PATH_TO_REFERENCES + "x_ref_n.txt"))
-y_ref_n = string_array_to_number_array(get_array_from_file(PATH_TO_REFERENCES + "y_ref_n.txt"))
-z_ref_n = string_array_to_number_array(get_array_from_file(PATH_TO_REFERENCES + "z_ref_n.txt"))
-x_ref_np1 = string_array_to_number_array(get_array_from_file(PATH_TO_REFERENCES + "x_ref_np1.txt"))
-y_ref_np1 = string_array_to_number_array(get_array_from_file(PATH_TO_REFERENCES + "y_ref_np1.txt"))
-z_ref_np1 = string_array_to_number_array(get_array_from_file(PATH_TO_REFERENCES + "z_ref_np1.txt"))
+x_ref_n = string_list_to_float_list(get_list_from_file(PATH_TO_REFERENCES + "x_ref_n.txt"))
+y_ref_n = string_list_to_float_list(get_list_from_file(PATH_TO_REFERENCES + "y_ref_n.txt"))
+z_ref_n = string_list_to_float_list(get_list_from_file(PATH_TO_REFERENCES + "z_ref_n.txt"))
+x_ref_np1 = string_list_to_float_list(get_list_from_file(PATH_TO_REFERENCES + "x_ref_np1.txt"))
+y_ref_np1 = string_list_to_float_list(get_list_from_file(PATH_TO_REFERENCES + "y_ref_np1.txt"))
+z_ref_np1 = string_list_to_float_list(get_list_from_file(PATH_TO_REFERENCES + "z_ref_np1.txt"))
