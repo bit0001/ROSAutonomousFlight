@@ -1,17 +1,17 @@
 #!/usr/bin/env python
+# coding=utf-8
 
 """This is the main module of the project where the algorithm is executed."""
 
 _author__ = "L. Miguel Vargas F."
 __copyright__ = "Copyright 2015, National Polytechnic School, Ecuador"
-__credits__ = ["Mani Monajjemi", "Sika Abarca", "Gustavo Scaglia", "Andres Rosales"]
+__credits__ = ["Mani Monajjemi", "Sika Abarca", "Gustavo Scaglia", "Andrés Rosales"]
 __license__ = "Noncommercial"
 __version__ = "1.0.0"
 __maintainer__ = "L. Miguel Vargas F."
 __email__ = "lmiguelvargasf@gmail.com"
 __status__ = "Development"
 
-import math
 from references import *
 from position import *
 from constants import *
@@ -19,20 +19,24 @@ from controller import *
 
 controller = ARDroneController()
 
+
 def save_positions():
     save_list_into_txt(x_n, "x_n")
     save_list_into_txt(y_n, "y_n")
     save_list_into_txt(z_n, "z_n")
     save_list_into_txt(t_n, "t_n")
 
+
 def compute_control_action(reference_np1, reference_n, current_n, control_constant):
     return reference_np1 - control_constant * (reference_n - current_n) - current_n
+
 
 def follow_trajectory():
     sampling_frequency = rospy.Rate(1 / T0)
     for i in range(len(x_ref_n)):
         if controller.last_time is None:
             controller.last_time = rospy.Time.now()
+            controller.initial_psi = controller.required_navigation_data["psi"]
             dt = 0
         else:
             current_time = rospy.Time.now()
@@ -69,20 +73,17 @@ def follow_trajectory():
                                                       [0, 0, omega_psi / OMEGA_PSI_MAX])
         sampling_frequency.sleep()
 
+
 if __name__ == "__main__":
     rospy.init_node("controller_node", anonymous=True)
 
-    rospy.sleep(1)
-    print("Ready!")
+    controller.get_ready()
+    # controller.send_reset()
     controller.send_flat_trim()
-
-    controller.send_take_off()
-    rospy.sleep(7.0)
+    controller.send_take_off_and_stabilize(7.0)
     print("Start")
-
-    follow_trajectory()
+    # follow_trajectory()
+    print(controller.initial_psi * 180 / math.pi)
     controller.send_land()
-
     save_positions()
-
     print("done!")

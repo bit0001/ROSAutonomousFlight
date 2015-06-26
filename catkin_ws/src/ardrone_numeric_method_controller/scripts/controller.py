@@ -7,14 +7,26 @@ from ardrone_autonomy.msg import Navdata
 from std_msgs.msg import Empty
 from geometry_msgs.msg import Twist, Vector3
 import std_srvs.srv
+import math
 
 QUEUE_SIZE = 10
+
+def adjust_psi(initial_psi, read_psi):
+    adjusted_psi = read_psi - initial_psi
+
+    if adjusted_psi < -180:
+        adjusted_psi += 360
+    elif adjusted_psi > 180:
+        adjusted_psi -= 360
+
+    return adjusted_psi
 
 class ARDroneController:
     def __init__(self):
         self.navigation_data = rospy.Subscriber("/ardrone/navdata", Navdata, self.callback_navigation_data)
         self.required_navigation_data = {'vx': None, 'vy': None, 'z': None, 'psi': None}
         self.last_time = None
+        self.initial_psi = None
 
         self.pub_takeoff = rospy.Publisher("/ardrone/takeoff", Empty, queue_size=QUEUE_SIZE)
         self.pub_land = rospy.Publisher("/ardrone/land", Empty, queue_size=QUEUE_SIZE)
@@ -22,14 +34,27 @@ class ARDroneController:
         self.pub_velocity = rospy.Publisher("/cmd_vel", Twist, queue_size=QUEUE_SIZE)
 
     def callback_navigation_data(self, data):
-        self.required_navigation_data['vx'] = data.vx / 1e3
-        self.required_navigation_data['vy'] = data.vy / 1e3
-        self.required_navigation_data['z'] = data.altd
-        self.required_navigation_data['psi'] = data.rotZ
+        self.required_navigation_data["vx"] = data.vx / 1e3
+        self.required_navigation_data["vy"] = data.vy / 1e3
+        self.required_navigation_data["z"] = data.altd / 1e3
+
+        if self.initial_psi is None:
+            self.required_navigation_data["psi"] = math.radians(data.rotZ)
+        else:
+            self.required_navigation_data["psi"] = math.radians(adjust_psi(self.initial_psi, data.rotZ))
+
+    def get_ready(self, n=1):
+        rospy.sleep(n)
+        print("Ready!")
 
     def send_take_off(self):
         print("Take off...")
         self.pub_takeoff.publish(Empty())
+
+    def send_take_off_and_stabilize(self, n):
+        self.send_take_off()
+        self.initial_psi = self.required_navigation_data["psi"]
+        rospy.sleep(n)
 
     def send_land(self):
         print('Land...')

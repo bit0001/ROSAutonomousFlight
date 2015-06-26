@@ -17,4 +17,4 @@ K_V_Z = get_list_from_file(PATH_TO_REFERENCES + "control_constants.txt")[1]
 K_OMEGA_PSI = get_list_from_file(PATH_TO_REFERENCES + "control_constants.txt")[2]
 V_XY_MAX = 2.0
 V_Z_MAX = 2.0
-OMEGA_PSI_MAX = 2.0
+OMEGA_PSI_MAX = 1.75
