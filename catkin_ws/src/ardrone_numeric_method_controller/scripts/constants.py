@@ -12,9 +12,9 @@ PATH_TO_REFERENCES = PATH_TO_SCRIPTS + "referenceAndConstantFiles/"
 
 T0 = 0.1
 TP = 2 * T0
-K_V_XY = get_list_from_file(PATH_TO_REFERENCES + "control_constants.txt")[0]
-K_V_Z = get_list_from_file(PATH_TO_REFERENCES + "control_constants.txt")[1]
-K_OMEGA_PSI = get_list_from_file(PATH_TO_REFERENCES + "control_constants.txt")[2]
-V_XY_MAX = 2.0
-V_Z_MAX = 2.0
-OMEGA_PSI_MAX = 1.75
+K_V_XY = eval(get_list_from_file(PATH_TO_REFERENCES + "control_constants.txt")[0])
+K_V_Z = eval(get_list_from_file(PATH_TO_REFERENCES + "control_constants.txt")[1])
+K_OMEGA_PSI = eval(get_list_from_file(PATH_TO_REFERENCES + "control_constants.txt")[2])
+V_XY_MAX = 5.0
+V_Z_MAX = 5.0
+OMEGA_PSI_MAX = 2 * 1.75

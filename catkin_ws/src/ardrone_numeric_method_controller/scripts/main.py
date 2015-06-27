@@ -31,6 +31,14 @@ def compute_control_action(reference_np1, reference_n, current_n, control_consta
     return reference_np1 - control_constant * (reference_n - current_n) - current_n
 
 
+def adjust_control_action(control_action):
+    if control_action > 1.0:
+        control_action = 1.0
+    elif control_action < -1.0:
+        control_action = -1.0
+
+    return control_action
+
 def follow_trajectory():
     sampling_frequency = rospy.Rate(1 / T0)
     for i in range(len(x_ref_n)):
@@ -40,12 +48,19 @@ def follow_trajectory():
             dt = 0
         else:
             current_time = rospy.Time.now()
-            dt = (current_time - controller.last_time)
+            dt = (current_time - controller.last_time).to_sec()
             controller.last_time = current_time
 
         t_n.append(i * T0)
+
+        print(dt, controller.required_navigation_data["vx"])
+        print(type(dt), type(controller.required_navigation_data["vx"]))
+
         dx = dt * controller.required_navigation_data["vx"]
         dy = dt * controller.required_navigation_data["vy"]
+
+        print(dx, dy)
+        print(type(dx), type(dy))
 
         try:
             x_n.append(x_n[-1] + dx)
@@ -57,17 +72,21 @@ def follow_trajectory():
         z_n.append(controller.required_navigation_data["z"])
         psi_n.append(controller.required_navigation_data["psi"])
 
-        y_control_action = compute_control_action(y_ref_np1[i], y_ref_n[i], y_n[-1], K_V_XY)
         x_control_action = compute_control_action(x_ref_np1[i], x_ref_n[i], x_n[-1], K_V_XY)
+        y_control_action = compute_control_action(y_ref_np1[i], y_ref_n[i], y_n[-1], K_V_XY)
         psi_ez_n.append(math.atan2(y_control_action, x_control_action))
 
         v_xy = (1 / T0) * (x_control_action * math.cos(psi_ez_n[-1]) + y_control_action * math.sin(psi_ez_n[-1]))
+        v_xy = adjust_control_action(v_xy)
         v_z = (1 / T0) * compute_control_action(z_ref_np1[i], z_ref_n[i], z_n[-1], K_V_Z)
+        v_z = adjust_control_action(v_z)
 
         try:
             omega_psi = (1 / T0) * (psi_ez_n[-1] - K_OMEGA_PSI * (psi_ez_n[-2] - psi_n[-2]) - psi_n[-2])
         except IndexError:
             omega_psi = (1 / T0) * (psi_ez_n[-1])
+
+        omega_psi = adjust_control_action(omega_psi)
 
         controller.send_linear_and_angular_velocities([v_xy / V_XY_MAX, 0, v_z / V_Z_MAX],
                                                       [0, 0, omega_psi / OMEGA_PSI_MAX])
@@ -82,8 +101,7 @@ if __name__ == "__main__":
     controller.send_flat_trim()
     controller.send_take_off_and_stabilize(7.0)
     print("Start")
-    # follow_trajectory()
-    print(controller.initial_psi * 180 / math.pi)
+    follow_trajectory()
     controller.send_land()
     save_positions()
     print("done!")
