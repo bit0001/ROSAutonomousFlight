@@ -27,18 +27,6 @@ def save_positions():
     save_list_into_txt(t_n, "t_n")
 
 
-def compute_control_action(reference_np1, reference_n, current_n, control_constant):
-    return reference_np1 - control_constant * (reference_n - current_n) - current_n
-
-
-def adjust_control_action(control_action):
-    if control_action > 1.0:
-        control_action = 1.0
-    elif control_action < -1.0:
-        control_action = -1.0
-
-    return control_action
-
 def follow_trajectory():
     sampling_frequency = rospy.Rate(1 / T0)
     for i in range(len(x_ref_n)):
@@ -53,14 +41,8 @@ def follow_trajectory():
 
         t_n.append(i * T0)
 
-        print(dt, controller.required_navigation_data["vx"])
-        print(type(dt), type(controller.required_navigation_data["vx"]))
-
         dx = dt * controller.required_navigation_data["vx"]
         dy = dt * controller.required_navigation_data["vy"]
-
-        print(dx, dy)
-        print(type(dx), type(dy))
 
         try:
             x_n.append(x_n[-1] + dx)

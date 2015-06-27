@@ -21,6 +21,14 @@ def adjust_psi(initial_psi, read_psi):
 
     return adjusted_psi
 
+def adjust_control_action(control_action):
+    if control_action > 1.0:
+        control_action = 1.0
+    elif control_action < -1.0:
+        control_action = -1.0
+
+    return control_action
+
 class ARDroneController:
     def __init__(self):
         self.navigation_data = rospy.Subscriber("/ardrone/navdata", Navdata, self.callback_navigation_data)
@@ -74,6 +82,8 @@ class ARDroneController:
             Vector3(linear_velocity[0], linear_velocity[1], linear_velocity[2]),
             Vector3(angular_velocity[0], angular_velocity[1], angular_velocity[2])))
 
+def compute_control_action(reference_np1, reference_n, current_n, control_constant):
+    return reference_np1 - control_constant * (reference_n - current_n) - current_n
 
 class ARDroneBasicController(ARDroneController):
     def move_forward(self, speed):
