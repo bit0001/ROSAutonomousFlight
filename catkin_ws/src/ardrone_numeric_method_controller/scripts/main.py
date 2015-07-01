@@ -27,9 +27,24 @@ def save_positions():
     save_list_into_txt(t_n, "t_n")
 
 def print_useful_data(controller, iteration):
+    data = controller.required_navigation_data
     print("Iteration: " + str(iteration))
-    print(controller.required_navigation_data)
-    print("Psi: " + str(math.degrees(controller.required_navigation_data["psi"])))
+    print("\tX speed: " + str(data["vx"]))
+    print("\tY speed: " + str(data["vy"]))
+    print("\tZ position: " + str(data["z"]))
+    print("\tPsi: " + str(math.degrees(controller.required_navigation_data["psi"])))
+
+def print_adjusted_control_actions(v_xy, v_z, omega_psi):
+    print("Adjusted Control Actions:")
+    print("\tV_XY: " + str(v_xy))
+    print("\tV_Z: " + str(v_z))
+    print("\tOMEGA_PSI: " + str(omega_psi))
+
+def print_non_adjusted_control_actions(v_xy, v_z, omega_psi):
+    print("Non-Adjusted Control Actions:")
+    print("\tV_XY: " + str(v_xy))
+    print("\tV_Z: " + str(v_z))
+    print("\tOMEGA_PSI: " + str(omega_psi))
 
 
 def follow_trajectory():
@@ -63,18 +78,20 @@ def follow_trajectory():
         psi_ez_n.append(math.atan2(y_control_action, x_control_action))
 
         v_xy = (1 / T0) * (x_control_action * math.cos(psi_ez_n[-1]) + y_control_action * math.sin(psi_ez_n[-1]))
-        v_xy = adjust_control_action(v_xy)
+        v_xy_adjusted = adjust_control_action(v_xy)
         v_z = (1 / T0) * compute_control_action(z_ref_np1[i], z_ref_n[i], z_n[-1], K_V_Z)
-        v_z = adjust_control_action(v_z)
+        v_z_adjusted = adjust_control_action(v_z)
 
         try:
             omega_psi = (1 / T0) * (psi_ez_n[-1] - K_OMEGA_PSI * (psi_ez_n[-2] - psi_n[-2]) - psi_n[-2])
         except IndexError:
             omega_psi = (1 / T0) * (psi_ez_n[-1])
 
-        omega_psi = adjust_control_action(omega_psi)
+        omega_psi_adjusted = adjust_control_action(omega_psi)
 
         print_useful_data(controller, i)
+        print_non_adjusted_control_actions(v_xy, v_z, omega_psi)
+        print_adjusted_control_actions(v_xy_adjusted, v_z_adjusted, omega_psi_adjusted)
 
         controller.send_linear_and_angular_velocities([v_xy / V_XY_MAX, 0, v_z / V_Z_MAX],
                                                       [0, 0, omega_psi / OMEGA_PSI_MAX])

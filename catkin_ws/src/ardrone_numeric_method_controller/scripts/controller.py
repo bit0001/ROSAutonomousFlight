@@ -62,7 +62,6 @@ class ARDroneController:
     def send_take_off_and_stabilize(self, n):
         self.send_take_off()
         self.initial_psi = self.required_navigation_data["psi"]
-        print("This is really the initial psi: " + str(math.degrees(self.initial_psi)))
         rospy.sleep(n)
 
     def send_land(self):
