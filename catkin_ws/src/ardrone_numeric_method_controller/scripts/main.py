@@ -26,13 +26,17 @@ def save_positions():
     save_list_into_txt(z_n, "z_n")
     save_list_into_txt(t_n, "t_n")
 
+def print_useful_data(controller, iteration):
+    print("Iteration: " + str(iteration))
+    print(controller.required_navigation_data)
+    print("Psi: " + str(math.degrees(controller.required_navigation_data["psi"])))
+
 
 def follow_trajectory():
     sampling_frequency = rospy.Rate(1 / T0)
     for i in range(len(x_ref_n)):
         if controller.last_time is None:
             controller.last_time = rospy.Time.now()
-            controller.initial_psi = controller.required_navigation_data["psi"]
             dt = 0
         else:
             current_time = rospy.Time.now()
@@ -70,6 +74,8 @@ def follow_trajectory():
 
         omega_psi = adjust_control_action(omega_psi)
 
+        print_useful_data(controller, i)
+
         controller.send_linear_and_angular_velocities([v_xy / V_XY_MAX, 0, v_z / V_Z_MAX],
                                                       [0, 0, omega_psi / OMEGA_PSI_MAX])
         sampling_frequency.sleep()
@@ -82,6 +88,7 @@ if __name__ == "__main__":
     # controller.send_reset()
     controller.send_flat_trim()
     controller.send_take_off_and_stabilize(7.0)
+    print("Initial psi: " + str(math.degrees(controller.initial_psi)))
     print("Start")
     follow_trajectory()
     controller.send_land()

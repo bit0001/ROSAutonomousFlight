@@ -49,7 +49,7 @@ class ARDroneController:
         if self.initial_psi is None:
             self.required_navigation_data["psi"] = math.radians(data.rotZ)
         else:
-            self.required_navigation_data["psi"] = math.radians(adjust_psi(self.initial_psi, data.rotZ))
+            self.required_navigation_data["psi"] = math.radians(adjust_psi(math.degrees(self.initial_psi), data.rotZ))
 
     def get_ready(self, n=1):
         rospy.sleep(n)
@@ -62,6 +62,7 @@ class ARDroneController:
     def send_take_off_and_stabilize(self, n):
         self.send_take_off()
         self.initial_psi = self.required_navigation_data["psi"]
+        print("This is really the initial psi: " + str(math.degrees(self.initial_psi)))
         rospy.sleep(n)
 
     def send_land(self):
