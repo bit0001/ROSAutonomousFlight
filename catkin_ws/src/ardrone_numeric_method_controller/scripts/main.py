@@ -25,6 +25,8 @@ def save_positions():
     save_list_into_txt(y_n, "y_n")
     save_list_into_txt(z_n, "z_n")
     save_list_into_txt(t_n, "t_n")
+    save_list_into_txt(psi_ez_n, "psi_ez_n")
+    save_list_into_txt(psi_n, "psi_n")
 
 def print_useful_data(controller, iteration):
     data = controller.required_navigation_data
@@ -78,23 +80,23 @@ def follow_trajectory():
         psi_ez_n.append(math.atan2(y_control_action, x_control_action))
 
         v_xy = (1 / T0) * (x_control_action * math.cos(psi_ez_n[-1]) + y_control_action * math.sin(psi_ez_n[-1]))
-        v_xy_adjusted = adjust_control_action(v_xy)
+        v_xy_adjusted = adjust_control_action(v_xy / V_XY_MAX)
         v_z = (1 / T0) * compute_control_action(z_ref_np1[i], z_ref_n[i], z_n[-1], K_V_Z)
-        v_z_adjusted = adjust_control_action(v_z)
+        v_z_adjusted = adjust_control_action(v_z / V_Z_MAX)
 
         try:
             omega_psi = (1 / T0) * (psi_ez_n[-1] - K_OMEGA_PSI * (psi_ez_n[-2] - psi_n[-2]) - psi_n[-2])
         except IndexError:
             omega_psi = (1 / T0) * (psi_ez_n[-1])
 
-        omega_psi_adjusted = adjust_control_action(omega_psi)
+        omega_psi_adjusted = adjust_control_action(omega_psi / OMEGA_PSI_MAX)
 
         print_useful_data(controller, i)
         print_non_adjusted_control_actions(v_xy, v_z, omega_psi)
         print_adjusted_control_actions(v_xy_adjusted, v_z_adjusted, omega_psi_adjusted)
 
-        controller.send_linear_and_angular_velocities([v_xy / V_XY_MAX, 0, v_z / V_Z_MAX],
-                                                      [0, 0, omega_psi / OMEGA_PSI_MAX])
+        controller.send_linear_and_angular_velocities([v_xy_adjusted, 0, v_z_adjusted],
+                                                      [0, 0, omega_psi_adjusted])
         sampling_frequency.sleep()
 
 
@@ -102,12 +104,11 @@ if __name__ == "__main__":
     rospy.init_node("controller_node", anonymous=True)
 
     controller.get_ready()
-    # controller.send_reset()
+    controller.send_reset()
     controller.send_flat_trim()
     controller.send_take_off_and_stabilize(7.0)
-    print("Initial psi: " + str(math.degrees(controller.initial_psi)))
     print("Start")
     follow_trajectory()
     controller.send_land()
     save_positions()
-    print("done!")
+    print("Done!")
