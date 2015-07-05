@@ -12,7 +12,7 @@ PATH_TO_POSITIONS_AND_TIME = PATH_TO_SCRIPTS + "positionsAndTime/"
 PATH_TO_REFERENCES = PATH_TO_SCRIPTS + "referenceAndConstantFiles/"
 HOST = "imap.gmail.com"
 EMAIL = "mvargas@devsu.com"
-PASSWORD = "proyectoepika"
+PASSWORD = "devsu123"
 
 
 T0 = 0.1
@@ -23,6 +23,3 @@ K_OMEGA_PSI = eval(get_list_from_file(PATH_TO_REFERENCES + "control_constants.tx
 V_XY_MAX = 200.0
 V_Z_MAX = 5.0
 OMEGA_PSI_MAX = 100 * 1.75
-
-save_attached_files_from_email(HOST, EMAIL, PASSWORD,
-                               PATH_TO_REFERENCES)
