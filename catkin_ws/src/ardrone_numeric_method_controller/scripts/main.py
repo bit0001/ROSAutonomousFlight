@@ -25,8 +25,8 @@ def save_positions():
     save_list_into_txt(y_n, "y_n")
     save_list_into_txt(z_n, "z_n")
     save_list_into_txt(t_n, "t_n")
-    save_list_into_txt(psi_ez_n, "psi_ez_n")
     save_list_into_txt(psi_n, "psi_n")
+
 
 def print_useful_data(controller, iteration):
     data = controller.required_navigation_data
@@ -36,11 +36,13 @@ def print_useful_data(controller, iteration):
     print("\tZ position: " + str(data["z"]))
     print("\tPsi: " + str(math.degrees(controller.required_navigation_data["psi"])))
 
+
 def print_adjusted_control_actions(v_xy, v_z, omega_psi):
     print("Adjusted Control Actions:")
     print("\tV_XY: " + str(v_xy))
     print("\tV_Z: " + str(v_z))
     print("\tOMEGA_PSI: " + str(omega_psi))
+
 
 def print_non_adjusted_control_actions(v_xy, v_z, omega_psi):
     print("Non-Adjusted Control Actions:")
@@ -61,44 +63,41 @@ def follow_trajectory():
             controller.last_time = current_time
 
         t_n.append(i * T0)
+        current_psi = controller.required_navigation_data["psi"]
 
-        dx = dt * controller.required_navigation_data["vx"]
-        dy = dt * controller.required_navigation_data["vy"]
+        dx_local = dt * controller.required_navigation_data["vx"]
+        dy_local = dt * controller.required_navigation_data["vy"]
 
         try:
-            x_n.append(x_n[-1] + dx)
-            y_n.append(y_n[-1] + dy)
+            dx_global = dx_local * math.cos(psi_n[-1]) - dy_local * math.sin(psi_n[-1])
+            dy_global = dx_local * math.sin(psi_n[-1]) + dy_local * math.cos(psi_n[-1])
         except IndexError:
-            x_n.append(dx)
-            y_n.append(dy)
+            dx_global = dx_local * math.cos(current_psi) - dy_local * math.sin(current_psi)
+            dy_global = dx_local * math.sin(current_psi) + dy_local * math.cos(current_psi)
+
+        try:
+            x_n.append(x_n[-1] + dx_global)
+            y_n.append(y_n[-1] + dy_global)
+        except IndexError:
+            x_n.append(dx_global)
+            y_n.append(dy_global)
 
         z_n.append(controller.required_navigation_data["z"])
-        psi_n.append(controller.required_navigation_data["psi"])
+        psi_n.append(current_psi)
 
-        x_control_action = compute_control_action(x_ref_np1[i], x_ref_n[i], x_n[-1], K_V_XY)
-        y_control_action = compute_control_action(y_ref_np1[i], y_ref_n[i], y_n[-1], K_V_XY)
-        psi_ez_n.append(math.atan2(y_control_action, x_control_action))
+        x_control_action = compute_control_action(x_ref_np1[i], x_ref_n[i], x_n[-1], K_V_X)
+        y_control_action = compute_control_action(y_ref_np1[i], y_ref_n[i], y_n[-1], K_V_Y)
 
-        v_xy = (1 / T0) * (x_control_action * math.cos(psi_ez_n[-1]) + y_control_action * math.sin(psi_ez_n[-1]))
-        v_xy_adjusted = adjust_control_action(v_xy / V_XY_MAX)
+        v_x = (1 / T0) * (x_control_action * math.cos(psi_n[-1]) + y_control_action * math.sin(psi_n[-1]))
+        v_y = (1 / T0) * (-x_control_action * math.sin(psi_n[-1]) + y_control_action * math.cos(psi_n[-1]))
         v_z = (1 / T0) * compute_control_action(z_ref_np1[i], z_ref_n[i], z_n[-1], K_V_Z)
+
+        v_x_adjusted = adjust_control_action(v_x / V_X_MAX)
+        v_y_adjusted = adjust_control_action(v_y / V_Y_MAX)
         v_z_adjusted = adjust_control_action(v_z / V_Z_MAX)
 
-        try:
-            omega_psi = (1 / T0) * (psi_ez_n[-1] - K_OMEGA_PSI * (psi_ez_n[-2] - psi_n[-2]) - psi_n[-2])
-        except IndexError:
-            omega_psi = (1 / T0) * (psi_ez_n[-1])
-
-        omega_psi_adjusted = adjust_control_action(omega_psi / OMEGA_PSI_MAX)
-
-        print_useful_data(controller, i)
-        print_non_adjusted_control_actions(v_xy, v_z, omega_psi)
-        print_adjusted_control_actions(v_xy_adjusted, v_z_adjusted, omega_psi_adjusted)
-
-        controller.send_linear_and_angular_velocities([v_xy_adjusted, 0, v_z_adjusted],
-                                                      [0, 0, omega_psi_adjusted])
+        controller.send_linear_and_angular_velocities([v_x_adjusted, v_y_adjusted, v_z_adjusted], [0, 0, 0])
         sampling_frequency.sleep()
-
 
 if __name__ == "__main__":
     rospy.init_node("controller_node", anonymous=True)
