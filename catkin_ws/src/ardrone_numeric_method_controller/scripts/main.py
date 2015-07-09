@@ -37,16 +37,16 @@ def print_useful_data(controller, iteration):
     print("\tPsi: " + str(math.degrees(controller.required_navigation_data["psi"])))
 
 
-def print_adjusted_control_actions(v_xy, v_z, omega_psi):
+def print_adjusted_control_actions(v_x, v_y, v_z):
     print("Adjusted Control Actions:")
-    print("\tV_XY: " + str(v_xy))
+    print("\tV_X: " + str(v_x))
+    print("\tV_Y: " + str(v_y))
     print("\tV_Z: " + str(v_z))
-    print("\tOMEGA_PSI: " + str(omega_psi))
 
 
 def print_non_adjusted_control_actions(v_xy, v_z, omega_psi):
     print("Non-Adjusted Control Actions:")
-    print("\tV_XY: " + str(v_xy))
+    print("\tV_X: " + str(v_xy))
     print("\tV_Z: " + str(v_z))
     print("\tOMEGA_PSI: " + str(omega_psi))
 
