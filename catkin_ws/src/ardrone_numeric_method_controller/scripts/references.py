@@ -19,7 +19,7 @@ def string_list_to_float_list(string_array):
 
     return float_list
 
-save_attached_files_from_email(HOST, EMAIL, PASSWORD, PATH_TO_REFERENCES)
+# save_attached_files_from_email(HOST, EMAIL, PASSWORD, PATH_TO_REFERENCES)
 
 x_ref_n = string_list_to_float_list(get_list_from_file(PATH_TO_REFERENCES + "x_ref_n.txt"))
 y_ref_n = string_list_to_float_list(get_list_from_file(PATH_TO_REFERENCES + "y_ref_n.txt"))

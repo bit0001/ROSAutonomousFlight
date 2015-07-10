@@ -1,24 +1,23 @@
 <!-- This is a sample lanuch file, please change it based on your needs -->
 <launch>
 	<node name="ardrone_driver" pkg="ardrone_autonomy" type="ardrone_driver" output="screen" clear_params="true">
-	    <param name="outdoor" value="1" />
-		<param name="flight_without_shell" value="1" />
+	    <param name="outdoor" value="0" />
+		<param name="flight_without_shell" value="0" />
 	    <param name="max_bitrate" value="4000" />
 	    <param name="bitrate" value="4000" />
 	    <param name="navdata_demo" value="0" />
 	    <param name="altitude_max" value="5000" />
         <param name="altitude_min" value="500" />
         <param name="euler_angle_max" value="0.35" />
-        <param name="control_vz_max" value="2000" />
-	    <param name="control_yaw" value="1.75" />
+        <param name="control_vz_max" value="1000" />
         <param name="control_yaw" value="1.75" />
 	    <param name="tf_prefix" value="mydrone" />
         <!-- Do we want to publish new-style navdata when received (true), or every time the ros-loop runs (false)? -->
 	    <!-- (does not affect legacy navdata, which is always published at ros-loop rate) -->
 		<param name="realtime_navdata" value="true" />
-        <!-- Covariance Values (3x3 matrices reshaped to 1x9)
+        <!-- Covariance Values (3x3 matrices reshaped to 1x9)-->
         <rosparam param="cov/imu_la">[0.1, 0.0, 0.0, 0.0, 0.1, 0.0, 0.0, 0.0, 0.1]</rosparam>
         <rosparam param="cov/imu_av">[1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0]</rosparam>
-        <rosparam param="cov/imu_or">[1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 100000.0]</rosparam>-->
+        <rosparam param="cov/imu_or">[1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 100000.0]</rosparam>
 	</node>
 </launch>

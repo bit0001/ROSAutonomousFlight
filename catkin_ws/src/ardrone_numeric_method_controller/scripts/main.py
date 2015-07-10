@@ -18,6 +18,9 @@ from constants import *
 from controller import *
 
 controller = ARDroneController()
+vx_to_plot = []
+vy_to_plot = []
+vz_to_plot = []
 
 
 def save_positions():
@@ -26,6 +29,9 @@ def save_positions():
     save_list_into_txt(z_n, "z_n")
     save_list_into_txt(t_n, "t_n")
     save_list_into_txt(psi_n, "psi_n")
+    save_list_into_txt(vx_to_plot, "vx_to_plot")
+    save_list_into_txt(vy_to_plot, "vy_to_plot")
+    save_list_into_txt(vz_to_plot, "vz_to_plot")
 
 
 def print_useful_data(controller, iteration):
@@ -44,11 +50,11 @@ def print_adjusted_control_actions(v_x, v_y, v_z):
     print("\tV_Z: " + str(v_z))
 
 
-def print_non_adjusted_control_actions(v_xy, v_z, omega_psi):
+def print_non_adjusted_control_actions(v_x, v_y, v_z):
     print("Non-Adjusted Control Actions:")
-    print("\tV_X: " + str(v_xy))
+    print("\tV_X: " + str(v_x))
+    print("\tV_Y: " + str(v_y))
     print("\tV_Z: " + str(v_z))
-    print("\tOMEGA_PSI: " + str(omega_psi))
 
 
 def follow_trajectory():
@@ -92,9 +98,16 @@ def follow_trajectory():
         v_y = (1 / T0) * (-x_control_action * math.sin(psi_n[-1]) + y_control_action * math.cos(psi_n[-1]))
         v_z = (1 / T0) * compute_control_action(z_ref_np1[i], z_ref_n[i], z_n[-1], K_V_Z)
 
+        vx_to_plot.append(v_x)
+        vy_to_plot.append(v_y)
+        vz_to_plot.append(v_z)
+
         v_x_adjusted = adjust_control_action(v_x / V_X_MAX)
         v_y_adjusted = adjust_control_action(v_y / V_Y_MAX)
         v_z_adjusted = adjust_control_action(v_z / V_Z_MAX)
+
+        print_non_adjusted_control_actions(v_x, v_y, v_z)
+        print_adjusted_control_actions(v_x_adjusted, v_y_adjusted, v_z_adjusted)
 
         controller.send_linear_and_angular_velocities([v_x_adjusted, v_y_adjusted, v_z_adjusted], [0, 0, 0])
         sampling_frequency.sleep()
@@ -105,7 +118,7 @@ if __name__ == "__main__":
     controller.get_ready()
     controller.send_reset()
     controller.send_flat_trim()
-    controller.send_take_off_and_stabilize(7.0)
+    controller.send_take_off_and_stabilize(10.0)
     print("Start")
     follow_trajectory()
     controller.send_land()
