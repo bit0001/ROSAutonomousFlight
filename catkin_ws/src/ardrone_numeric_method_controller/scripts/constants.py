@@ -8,9 +8,6 @@ PATH_TO_SCRIPTS = "/home/m//PycharmProjects/ROSAutonomousFlight/catkin_ws/src/" 
                   "ardrone_numeric_method_controller/scripts/"
 PATH_TO_POSITIONS_AND_TIME = PATH_TO_SCRIPTS + "positionsAndTime/"
 PATH_TO_REFERENCES = PATH_TO_SCRIPTS + "referenceAndConstantFiles/"
-HOST = "imap.gmail.com"
-EMAIL = "mvargas@devsu.com"
-PASSWORD = "devsu123"
 
 
 T0 = 0.1
