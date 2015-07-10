@@ -27,25 +27,22 @@ def save_attached_files_from_email(host, user, password, path_to_save_files):
     for attachment in last_received_email.attachments:
         with open(path_to_save_files + attachment[0], 'bw+') as f:
             MAX_LENGTH = 101
-            if "control_constants" not in attachment[0]:
-                string_attachment = attachment[1].decode(encoding='UTF-8')
-                list_attachment = string_attachment.split("\n")[:-1]
+            string_attachment = attachment[1].decode(encoding='UTF-8')
+            list_attachment = string_attachment.split("\n")[:-1]
 
-                float_attachment_list = []
+            float_attachment_list = []
 
-                for e in list_attachment:
-                    float_attachment_list.append(float(e))
+            for e in list_attachment:
+                float_attachment_list.append(float(e))
 
-                if len(float_attachment_list) > MAX_LENGTH:
-                    float_attachment_list = reduce_list_until_be_useful(float_attachment_list, MAX_LENGTH, 5)
+            if len(float_attachment_list) > MAX_LENGTH:
+                float_attachment_list = reduce_list_until_be_useful(float_attachment_list, MAX_LENGTH, 5)
 
-                string_to_save = ''
-                for item in float_attachment_list:
-                    string_to_save += str(item) + '\n'
+            string_to_save = ''
+            for item in float_attachment_list:
+                string_to_save += str(item) + '\n'
 
-                f.write(string_to_save.encode(encoding='UTF-8'))
-            else:
-                f.write(attachment[1])
+            f.write(string_to_save.encode(encoding='UTF-8'))
 
 def reduce_points(list_to_reduce, max_length):
     additional_points = len(list_to_reduce) - max_length
