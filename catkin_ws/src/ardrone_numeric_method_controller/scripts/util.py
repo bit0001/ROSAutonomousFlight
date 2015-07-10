@@ -36,9 +36,7 @@ def save_attached_files_from_email(host, user, password, path_to_save_files):
                 for e in list_attachment:
                     float_attachment_list.append(float(e))
 
-                if len(float_attachment_list) <= MAX_LENGTH:
-                    print("The arrays remains the same.", len(float_attachment_list))
-                else:
+                if len(float_attachment_list) > MAX_LENGTH:
                     float_attachment_list = reduce_list_until_be_useful(float_attachment_list, MAX_LENGTH, 5)
 
                 string_to_save = ''
