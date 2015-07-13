@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/python3
 # coding=utf-8
 
 """This is the main module of the project where the algorithm is executed."""
@@ -120,7 +120,7 @@ if __name__ == "__main__":
     controller.send_flat_trim()
     controller.send_take_off_and_stabilize(10.0)
     print("Start")
-    follow_trajectory()
+    # follow_trajectory()
     controller.send_land()
     save_positions()
     print("Done!")
