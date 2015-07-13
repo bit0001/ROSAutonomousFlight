@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 """
 This is a small interface that initializes the ROS interface.
 """
@@ -10,25 +11,29 @@ import subprocess
 class ROSLauncher:
     def __init__(self):
         window = Tk()
+        window.resizable(width=FALSE, height=FALSE)
         self.change_window_size(window, 400, 100)
 
         top_frame = Frame(window)
         top_frame.pack()
+        middle_frame = Frame(window)
+        middle_frame.pack()
         bottom_frame = Frame(window)
         bottom_frame.pack()
 
 
         window.title("Thesis Interface")
 
-
         label = Label(top_frame, text="GUI for ARDrone Autonomous Flight")
         label.pack()
-        save_files_button = Button(bottom_frame, text="Save attached files", command=self.get_files_from_email)
+        save_files_button = Button(middle_frame, text="Save attached files", command=self.get_files_from_email)
         save_files_button.pack(side=LEFT)
-        ros_start_button = Button(bottom_frame, text="Start ROS", command=self.start_ROS)
+        ros_start_button = Button(middle_frame, text="Start ROS", command=self.start_ROS)
         ros_start_button.pack(side=LEFT)
-        follow_trajectory_button = Button(bottom_frame, text="Follow Trajectory", command=self.get_files_from_email)
+        follow_trajectory_button = Button(middle_frame, text="Follow Trajectory", command=self.get_files_from_email)
         follow_trajectory_button.pack(side=LEFT)
+        plot_results_button = Button(bottom_frame, text="Plot Results", command=self.plot_results)
+        plot_results_button.pack()
 
         window.mainloop()  # Create an event loop
 
@@ -41,7 +46,11 @@ class ROSLauncher:
     def get_files_from_email(self):
         subprocess.call("python3 main.py 1", shell=True)
 
+    def plot_results(self):
+        subprocess.call("python3 plot_results.py 1", shell=True)
+
     def change_window_size(self, window, width, height):
         window.geometry('{}x{}'.format(width, height))
+
 
 ROSLauncher()
