@@ -14,6 +14,14 @@ def get_list_from_file(path_to_file):
     return content.split('\n')[:-1]
 
 
+def string_list_to_float_list(string_array):
+    float_list = []
+    for item in string_array:
+        float_list.append(float(item))
+
+    return float_list
+
+
 def save_list_into_file(a_list, path_to_file):
     created_file = open(path_to_file, 'w+')
 
@@ -33,14 +41,22 @@ def reduce_points(list_to_reduce, max_length):
 
 
 def reduce_list_until_be_useful(list_to_reduce, max_length, hysteresis):
-    while abs(len(list_to_reduce) - max_length) >= hysteresis:
-        list_to_reduce = reduce_points(list_to_reduce, max_length)
+    if len(list_to_reduce) > max_length:
+        while abs(len(list_to_reduce) - max_length) >= hysteresis:
+            list_to_reduce = reduce_points(list_to_reduce, max_length)
 
     return list_to_reduce
 
 
-def convert_bin_file_to_string_array(bin_file):
+def convert_bin_file_to_string_list(bin_file):
     return bin_file.decode(encoding='UTF-8').split("\n")[:-1]
+
+
+def float_list_to_string(float_attachment_list):
+    string_to_save = ''
+    for item in float_attachment_list:
+        string_to_save += str(item) + '\n'
+    return string_to_save
 
 
 def save_attached_files_from_email(host, user, password, path_to_save_files):
@@ -51,18 +67,11 @@ def save_attached_files_from_email(host, user, password, path_to_save_files):
     for attachment in last_received_email.attachments:
         with open(path_to_save_files + attachment[0], 'bw+') as f:
             MAX_LENGTH = 101
-            list_attachment = convert_bin_file_to_string_array(attachment[1])
+            list_attachment = convert_bin_file_to_string_list(attachment[1])
+            float_attachment_list = string_list_to_float_list(list_attachment)
 
-            float_attachment_list = []
+            float_attachment_list = reduce_list_until_be_useful(float_attachment_list, MAX_LENGTH, 5)
 
-            for e in list_attachment:
-                float_attachment_list.append(float(e))
-
-            if len(float_attachment_list) > MAX_LENGTH:
-                float_attachment_list = reduce_list_until_be_useful(float_attachment_list, MAX_LENGTH, 5)
-
-            string_to_save = ''
-            for item in float_attachment_list:
-                string_to_save += str(item) + '\n'
+            string_to_save = float_list_to_string(float_attachment_list)
 
             f.write(string_to_save.encode(encoding='UTF-8'))
