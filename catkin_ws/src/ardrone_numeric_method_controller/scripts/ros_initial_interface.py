@@ -21,7 +21,6 @@ class ROSLauncher:
         bottom_frame = Frame(window)
         bottom_frame.pack()
 
-
         window.title("Thesis Interface")
 
         label = Label(top_frame, text="GUI for ARDrone Autonomous Flight")
@@ -30,7 +29,7 @@ class ROSLauncher:
         save_files_button.pack(side=LEFT)
         ros_start_button = Button(middle_frame, text="Start ROS", command=self.start_ROS)
         ros_start_button.pack(side=LEFT)
-        follow_trajectory_button = Button(middle_frame, text="Follow Trajectory", command=self.get_files_from_email)
+        follow_trajectory_button = Button(middle_frame, text="Follow Trajectory", command=self.follow_trajectory)
         follow_trajectory_button.pack(side=LEFT)
         plot_results_button = Button(bottom_frame, text="Plot Results", command=self.plot_results)
         plot_results_button.pack()
@@ -43,11 +42,11 @@ class ROSLauncher:
     def get_files_from_email(self):
         subprocess.call("python3 save_references.py 1", shell=True)
 
-    def get_files_from_email(self):
+    def follow_trajectory(self):
         subprocess.call("python3 main.py 1", shell=True)
 
     def plot_results(self):
-        subprocess.call("python3 plot_results.py 1", shell=True)
+        subprocess.call("python3 plot_results.py 1 &", shell=True)
 
     def change_window_size(self, window, width, height):
         window.geometry('{}x{}'.format(width, height))

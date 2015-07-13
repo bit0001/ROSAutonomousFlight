@@ -23,6 +23,10 @@ def string_list_to_float_list(string_array):
     return float_list
 
 
+def get_float_list_from_txt_file(txt_file):
+    return string_list_to_float_list(get_list_from_file(txt_file + ".txt"))
+
+
 def save_list_into_file(a_list, path_to_file):
     created_file = open(path_to_file, 'w+')
 
