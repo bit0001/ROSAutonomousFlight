@@ -11,6 +11,7 @@ imaplib._MAXLINE = 100000
 def get_list_from_file(path_to_file):
     with open(path_to_file) as opened_file:
         content = opened_file.read()
+
     return content.split('\n')[:-1]
 
 
@@ -59,19 +60,24 @@ def float_list_to_string(float_attachment_list):
     return string_to_save
 
 
-def save_attached_files_from_email(host, user, password, path_to_save_files):
-    imapper = easyimap.connect(host, user, password)
+def encode_string_to_binary(string):
+    return string.encode(encoding='UTF-8')
 
-    last_received_email = imapper.listup()[0]
+
+def reduce_points_in_attached_binary_file(attachment, max_length, hysteresis):
+    string_list = convert_bin_file_to_string_list(attachment[1])
+    float_list = string_list_to_float_list(string_list)
+    reduced_float_list = reduce_list_until_be_useful(float_list, max_length, hysteresis)
+    string_to_save = float_list_to_string(reduced_float_list)
+    encoded_string = encode_string_to_binary(string_to_save)
+
+    return encoded_string
+
+
+def save_attached_files_from_email(host, user, password, path_to_save_files):
+    last_received_email = easyimap.connect(host, user, password).listup()[0]
 
     for attachment in last_received_email.attachments:
         with open(path_to_save_files + attachment[0], 'bw+') as f:
-            MAX_LENGTH = 101
-            list_attachment = convert_bin_file_to_string_list(attachment[1])
-            float_attachment_list = string_list_to_float_list(list_attachment)
-
-            float_attachment_list = reduce_list_until_be_useful(float_attachment_list, MAX_LENGTH, 5)
-
-            string_to_save = float_list_to_string(float_attachment_list)
-
-            f.write(string_to_save.encode(encoding='UTF-8'))
+            reduced_binary_file = reduce_points_in_attached_binary_file(attachment, 101, 5)
+            f.write(reduced_binary_file)
