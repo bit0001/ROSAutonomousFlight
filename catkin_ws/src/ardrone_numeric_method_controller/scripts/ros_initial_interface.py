@@ -2,11 +2,9 @@
 This is a small interface that initializes the ROS interface.
 """
 from tkinter import *
-
-from tkinter import *
 import os
 import subprocess
-import pylab
+
 
 # Import all definitions from tkinter
 class ROSLauncher:
