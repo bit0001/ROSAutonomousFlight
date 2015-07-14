@@ -6,7 +6,6 @@ either by defining a trajectory in MATLAB or bye drawing a trajectory in the mob
 """
 
 from util import get_float_list_from_txt_file
-from util import *
 from constants import PATH_TO_REFERENCES
 
 x_ref_n = get_float_list_from_txt_file(PATH_TO_REFERENCES + "x_ref_n")
