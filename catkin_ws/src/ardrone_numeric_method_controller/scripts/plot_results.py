@@ -18,15 +18,27 @@ def show_legend(figure):
     legend = figure.legend(loc="best", shadow=True)
 
     for label in legend.get_texts():
-        label.set_fontsize('medium')
+        label.set_fontsize("medium")
 
     for label in legend.get_lines():
         label.set_linewidth(1.0)
 
 
 def plot_reference_and_position(figure, reference, position, time):
-    figure.plot(t_n, position, 'b', label="Actual")
-    figure.plot(t_n, reference, 'r--', label="Reference")
+    figure.plot(time, position, "b", label="Actual")
+    figure.plot(time, reference, "r--", label="Reference")
+
+
+def add_title_and_axis_labels(figure, title, x_label, y_label):
+    figure.set_title(title)
+    figure.set_xlabel(x_label)
+    figure.set_ylabel(y_label)
+
+
+def plot_errors(figure, error, time):
+    zeros = [0 for e in range(len(error))]
+    figure.plot(time, error, "b")
+    figure.plot(time, zeros, "r--")
 
 
 t_n = [0.1 * i for i in range(len(x_ref_n))]
@@ -35,36 +47,24 @@ whole_figure, plot_array = plt.subplots(2, 3)
 whole_figure.suptitle("References, Positions and Errors", fontsize=16)
 
 plot_reference_and_position(plot_array[0, 0], x_ref_n, x_n, t_n)
-plot_array[0, 0].set_title('X-position vs. time')
-plot_array[0, 0].set_xlabel("Time [s]")
-plot_array[0, 0].set_ylabel("X-position [m]")
+add_title_and_axis_labels(plot_array[0, 0], "X-position vs. time", "Time [s]", "X-position [m]")
 show_legend(plot_array[0, 0])
 
 plot_reference_and_position(plot_array[0, 1], y_ref_n, y_n, t_n)
-plot_array[0, 1].set_title('Y-position vs. time')
-plot_array[0, 1].set_xlabel("Time [s]")
-plot_array[0, 1].set_ylabel("Y-position [m]")
+add_title_and_axis_labels(plot_array[0, 1], "Y-position vs. time", "Time [s]", "Y-position [m]")
 show_legend(plot_array[0, 1])
 
 plot_reference_and_position(plot_array[0, 2], z_ref_n, z_n, t_n)
-plot_array[0, 2].set_title('Z-Position vs. time')
-plot_array[0, 2].set_xlabel("Time [s]")
-plot_array[0, 2].set_ylabel("Z-position [m]")
+add_title_and_axis_labels(plot_array[0, 2], "Z-Position vs. time", "Time [s]", "Z-position [m]")
 show_legend(plot_array[0, 2])
 
-plot_array[1, 0].plot(t_n, x_error, 'r--')
-plot_array[1, 0].set_title('X-errors vs. time')
-plot_array[1, 0].set_xlabel("Time [s]")
-plot_array[1, 0].set_ylabel("Error %")
+plot_errors(plot_array[1, 0], x_error, t_n)
+add_title_and_axis_labels(plot_array[1, 0], "X-errors vs. time", "Time [s]", "X-Error %")
 
-plot_array[1, 1].plot(t_n, y_error, 'r--')
-plot_array[1, 1].set_title('Y-errors vs. time')
-plot_array[1, 1].set_xlabel("Time [s]")
-plot_array[1, 1].set_ylabel("Error %")
+plot_errors(plot_array[1, 1], y_error, t_n)
+add_title_and_axis_labels(plot_array[1, 1], "Y-errors vs. time", "Time [s]", "Y-Error %")
 
-plot_array[1, 2].plot(t_n, z_error, 'r--')
-plot_array[1, 2].set_title('Z-errors vs. time')
-plot_array[1, 2].set_xlabel("Time [s]")
-plot_array[1, 2].set_ylabel("Error %")
+plot_errors(plot_array[1, 2], z_error, t_n)
+add_title_and_axis_labels(plot_array[1, 2], "Z-errors vs. time", "Time [s]", "Z-Error %")
 
 plt.show()
