@@ -2,7 +2,6 @@
 
 """This is a module that contains useful functions for this project."""
 import imaplib
-
 import easyimap
 
 imaplib._MAXLINE = 100000
@@ -85,3 +84,7 @@ def save_attached_files_from_email(host, user, password, path_to_save_files):
         with open(path_to_save_files + attachment[0], 'bw+') as f:
             reduced_binary_file = reduce_points_in_attached_binary_file(attachment, 101, 5)
             f.write(reduced_binary_file)
+
+
+def save_list_into_txt(a_list, txt_file):
+    save_list_into_file(a_list, txt_file + '.txt')

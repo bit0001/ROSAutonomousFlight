@@ -13,25 +13,30 @@ __email__ = "lmiguelvargasf@gmail.com"
 __status__ = "Development"
 
 from references import *
-from position import *
 from constants import *
 from controller import *
+from util import save_list_into_txt
 
 controller = ARDroneController()
+t_n = []
+x_n = []
+y_n = []
+z_n = []
+psi_n = []
 vx_to_plot = []
 vy_to_plot = []
 vz_to_plot = []
 
 
 def save_positions():
-    save_list_into_txt(x_n, "x_n")
-    save_list_into_txt(y_n, "y_n")
-    save_list_into_txt(z_n, "z_n")
-    save_list_into_txt(t_n, "t_n")
-    save_list_into_txt(psi_n, "psi_n")
-    save_list_into_txt(vx_to_plot, "vx_to_plot")
-    save_list_into_txt(vy_to_plot, "vy_to_plot")
-    save_list_into_txt(vz_to_plot, "vz_to_plot")
+    save_list_into_txt(x_n, PATH_TO_REFERENCES + "x_n")
+    save_list_into_txt(y_n, PATH_TO_REFERENCES + "y_n")
+    save_list_into_txt(z_n, PATH_TO_REFERENCES + "z_n")
+    save_list_into_txt(t_n, PATH_TO_REFERENCES + "t_n")
+    save_list_into_txt(psi_n, PATH_TO_REFERENCES + "psi_n")
+    save_list_into_txt(vx_to_plot, PATH_TO_REFERENCES + "vx_to_plot")
+    save_list_into_txt(vy_to_plot, PATH_TO_REFERENCES + "vy_to_plot")
+    save_list_into_txt(vz_to_plot, PATH_TO_REFERENCES + "vz_to_plot")
 
 
 def print_useful_data(controller, iteration):

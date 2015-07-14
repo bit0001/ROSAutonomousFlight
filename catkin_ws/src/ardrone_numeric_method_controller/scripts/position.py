@@ -1,16 +1,10 @@
-#!/usr/bin/env python
+#!/usr/bin/python3
 
-"""This module contains functions to work with position data."""
+"""This module contains the positions that have been generated after the drone has followed a trajectory."""
 
-from util import save_list_into_file
+from util import get_float_list_from_txt_file
 from constants import PATH_TO_POSITIONS_AND_TIME
 
-t_n = []
-x_n = []
-y_n = []
-z_n = []
-psi_n = []
-
-
-def save_list_into_txt(a_list, txt_file_name):
-    save_list_into_file(a_list, PATH_TO_POSITIONS_AND_TIME + txt_file_name + '.txt')
+x_n = get_float_list_from_txt_file(PATH_TO_POSITIONS_AND_TIME + "x_n")
+y_n = get_float_list_from_txt_file(PATH_TO_POSITIONS_AND_TIME + "y_n")
+z_n = get_float_list_from_txt_file(PATH_TO_POSITIONS_AND_TIME + "z_n")
