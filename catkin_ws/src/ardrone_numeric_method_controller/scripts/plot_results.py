@@ -67,4 +67,6 @@ add_title_and_axis_labels(plot_array[1, 1], "Y-errors vs. time", "Time [s]", "Y-
 plot_errors(plot_array[1, 2], z_error, t_n)
 add_title_and_axis_labels(plot_array[1, 2], "Z-errors vs. time", "Time [s]", "Z-Error %")
 
+mng = plt.get_current_fig_manager()
+mng.full_screen_toggle()
 plt.show()
