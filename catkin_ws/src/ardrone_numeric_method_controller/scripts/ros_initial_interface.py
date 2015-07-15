@@ -6,6 +6,7 @@ from tkinter import *
 import os
 import subprocess
 
+
 class ROSLauncher:
     def __init__(self):
         window = Tk()
@@ -25,7 +26,7 @@ class ROSLauncher:
         foot_frame = Frame(window)
         foot_frame.pack()
 
-        title_label = Label(top_frame, text="GUI for ARDrone Autonomous Flight", font="bold")
+        title_label = Label(top_frame, text="GUI for ARDrone Autonomous Flight", font="TkDefaultFont 15 bold")
         title_label.pack()
         self.insert_spaces_in_frame(top_frame, 1)
 

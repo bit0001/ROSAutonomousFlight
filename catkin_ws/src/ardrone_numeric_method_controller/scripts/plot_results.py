@@ -26,13 +26,13 @@ add_title_and_axis_labels(plot_array[0, 2], "Z-Position vs. time", "Time [s]", "
 show_legend(plot_array[0, 2])
 
 plot_errors(plot_array[1, 0], x_error, t_n)
-add_title_and_axis_labels(plot_array[1, 0], "X-errors vs. time", "Time [s]", "X-Error %")
+add_title_and_axis_labels(plot_array[1, 0], "X-error vs. time", "Time [s]", "X-Error")
 
 plot_errors(plot_array[1, 1], y_error, t_n)
-add_title_and_axis_labels(plot_array[1, 1], "Y-errors vs. time", "Time [s]", "Y-Error %")
+add_title_and_axis_labels(plot_array[1, 1], "Y-error vs. time", "Time [s]", "Y-Error %")
 
 plot_errors(plot_array[1, 2], z_error, t_n)
-add_title_and_axis_labels(plot_array[1, 2], "Z-errors vs. time", "Time [s]", "Z-Error %")
+add_title_and_axis_labels(plot_array[1, 2], "Z-error vs. time", "Time [s]", "Z-Error %")
 
 mng = plt.get_current_fig_manager()
 mng.full_screen_toggle()
