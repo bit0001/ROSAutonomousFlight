@@ -88,3 +88,30 @@ def save_attached_files_from_email(host, user, password, path_to_save_files):
 
 def save_list_into_txt(a_list, txt_file):
     save_list_into_file(a_list, txt_file + '.txt')
+
+
+def show_legend(figure):
+    legend = figure.legend(loc="best", shadow=True)
+
+    for label in legend.get_texts():
+        label.set_fontsize("medium")
+
+    for label in legend.get_lines():
+        label.set_linewidth(1.0)
+
+
+def plot_reference_and_position(figure, reference, position, time):
+    figure.plot(time, position, "b", label="Actual")
+    figure.plot(time, reference, "r--", label="Reference")
+
+
+def add_title_and_axis_labels(figure, title, x_label, y_label):
+    figure.set_title(title)
+    figure.set_xlabel(x_label)
+    figure.set_ylabel(y_label)
+
+
+def plot_errors(figure, error, time):
+    zeros = [0 for e in range(len(error))]
+    figure.plot(time, error, "b")
+    figure.plot(time, zeros, "r--")

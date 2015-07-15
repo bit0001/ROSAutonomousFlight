@@ -6,14 +6,13 @@ from tkinter import *
 import os
 import subprocess
 
-
-# Import all definitions from tkinter
 class ROSLauncher:
     def __init__(self):
         window = Tk()
         window.title("Thesis Interface")
         window.resizable(width=FALSE, height=FALSE)
-        self.change_window_size(window, 500, 350)
+        self.change_window_size(window, 500, 380)
+        self.language = "E"
 
         top_frame = Frame(window)
         top_frame.pack()
@@ -23,13 +22,14 @@ class ROSLauncher:
         middle_frame.pack()
         bottom_frame = Frame(window)
         bottom_frame.pack()
+        foot_frame = Frame(window)
+        foot_frame.pack()
 
         title_label = Label(top_frame, text="GUI for ARDrone Autonomous Flight", font="bold")
         title_label.pack()
-
         self.insert_spaces_in_frame(top_frame, 1)
 
-        drone_image = PhotoImage(file='./ardrone.gif')
+        drone_image = PhotoImage(file="./ardrone.gif")
         image_label = Label(image_frame, image=drone_image)
         image_label.pack(side=LEFT)
 
@@ -45,7 +45,9 @@ class ROSLauncher:
         follow_trajectory_button.pack(side=LEFT)
         plot_results_button = Button(bottom_frame, text="Plot Results", command=self.plot_results)
         plot_results_button.pack()
-
+        self.insert_spaces_in_frame(foot_frame, 1)
+        foot_note = Label(foot_frame, text="© 2015 EPN All Rights Reserved")
+        foot_note.pack()
 
         window.mainloop()
 
@@ -56,10 +58,10 @@ class ROSLauncher:
         subprocess.call("python3 save_references.py 1", shell=True)
 
     def draw_trajectory(self):
-        subprocess.call("python3 draw_trajectory.py 1", shell=True)
+        subprocess.call("python3 draw_trajectory.py 1 &", shell=True)
 
     def follow_trajectory(self):
-        subprocess.call("python3 main.py 1", shell=True)
+        subprocess.call("python3 main.py 1 &", shell=True)
 
     def plot_results(self):
         subprocess.call("python3 plot_results.py 1 &", shell=True)
