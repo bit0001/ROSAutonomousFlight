@@ -12,10 +12,12 @@ class ROSLauncher:
     def __init__(self):
         window = Tk()
         window.resizable(width=FALSE, height=FALSE)
-        self.change_window_size(window, 400, 100)
+        self.change_window_size(window, 500, 400)
 
         top_frame = Frame(window)
         top_frame.pack()
+        below_top_frame = Frame(window)
+        below_top_frame.pack()
         middle_frame = Frame(window)
         middle_frame.pack()
         bottom_frame = Frame(window)
@@ -23,8 +25,13 @@ class ROSLauncher:
 
         window.title("Thesis Interface")
 
-        label = Label(top_frame, text="GUI for ARDrone Autonomous Flight")
-        label.pack()
+        drone_image = PhotoImage(file='./ardrone.gif')
+        display_drone_image = drone_image.subsample(2, 2)
+
+        label = Label(below_top_frame, image=drone_image).pack(side=LEFT)
+
+        title_label = Label(top_frame, text="GUI for ARDrone Autonomous Flight", font="bold")
+        title_label.pack()
         save_files_button = Button(middle_frame, text="Save attached files", command=self.get_files_from_email)
         save_files_button.pack(side=LEFT)
         ros_start_button = Button(middle_frame, text="Start ROS", command=self.start_ROS)
