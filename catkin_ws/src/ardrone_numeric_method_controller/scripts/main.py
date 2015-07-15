@@ -29,14 +29,14 @@ vz_to_plot = []
 
 
 def save_positions():
-    save_list_into_txt(x_n, PATH_TO_REFERENCES + "x_n")
-    save_list_into_txt(y_n, PATH_TO_REFERENCES + "y_n")
-    save_list_into_txt(z_n, PATH_TO_REFERENCES + "z_n")
-    save_list_into_txt(t_n, PATH_TO_REFERENCES + "t_n")
-    save_list_into_txt(psi_n, PATH_TO_REFERENCES + "psi_n")
-    save_list_into_txt(vx_to_plot, PATH_TO_REFERENCES + "vx_to_plot")
-    save_list_into_txt(vy_to_plot, PATH_TO_REFERENCES + "vy_to_plot")
-    save_list_into_txt(vz_to_plot, PATH_TO_REFERENCES + "vz_to_plot")
+    save_list_into_txt(x_n, PATH_TO_POSITIONS_AND_TIME + "x_n")
+    save_list_into_txt(y_n, PATH_TO_POSITIONS_AND_TIME + "y_n")
+    save_list_into_txt(z_n, PATH_TO_POSITIONS_AND_TIME + "z_n")
+    save_list_into_txt(t_n, PATH_TO_POSITIONS_AND_TIME + "t_n")
+    save_list_into_txt(psi_n, PATH_TO_POSITIONS_AND_TIME + "psi_n")
+    save_list_into_txt(vx_to_plot, PATH_TO_POSITIONS_AND_TIME + "vx_to_plot")
+    save_list_into_txt(vy_to_plot, PATH_TO_POSITIONS_AND_TIME + "vy_to_plot")
+    save_list_into_txt(vz_to_plot, PATH_TO_POSITIONS_AND_TIME + "vz_to_plot")
 
 
 def print_useful_data(controller, iteration):
