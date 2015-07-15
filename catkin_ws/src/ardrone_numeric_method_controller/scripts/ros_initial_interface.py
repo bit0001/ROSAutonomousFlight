@@ -13,7 +13,6 @@ class ROSLauncher:
         window.title("Thesis Interface")
         window.resizable(width=FALSE, height=FALSE)
         self.change_window_size(window, 500, 380)
-        self.language = "E"
 
         top_frame = Frame(window)
         top_frame.pack()

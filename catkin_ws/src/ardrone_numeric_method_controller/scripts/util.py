@@ -97,7 +97,7 @@ def show_legend(figure):
         label.set_fontsize("medium")
 
     for label in legend.get_lines():
-        label.set_linewidth(1.0)
+        label.set_linewidth(2.0)
 
 
 def plot_reference_and_position(figure, reference, position, time):
