@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python
 # coding=utf-8
 
 """This is the main module of the project where the algorithm is executed."""
@@ -121,7 +121,7 @@ if __name__ == "__main__":
     rospy.init_node("controller_node", anonymous=True)
 
     controller.get_ready()
-    controller.send_reset()
+    # controller.send_reset()
     controller.send_flat_trim()
     controller.send_take_off_and_stabilize(10.0)
     print("Start")
