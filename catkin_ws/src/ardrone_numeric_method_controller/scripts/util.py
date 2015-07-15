@@ -101,8 +101,8 @@ def show_legend(figure):
 
 
 def plot_reference_and_position(figure, reference, position, time):
-    figure.plot(time, position, "b", label="Actual")
-    figure.plot(time, reference, "r--", label="Reference")
+    figure.plot(time, position, "b", label="Actual", linewidth=2.0)
+    figure.plot(time, reference, "r--", label="Reference", linewidth=2.0)
 
 
 def add_title_and_axis_labels(figure, title, x_label, y_label):
@@ -113,5 +113,5 @@ def add_title_and_axis_labels(figure, title, x_label, y_label):
 
 def plot_errors(figure, error, time):
     zeros = [0 for e in range(len(error))]
-    figure.plot(time, error, "b")
-    figure.plot(time, zeros, "r--")
+    figure.plot(time, error, "b", linewidth=2.0)
+    figure.plot(time, zeros, "r--", linewidth=2.0)
