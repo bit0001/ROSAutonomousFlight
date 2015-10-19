@@ -117,9 +117,9 @@ def follow_trajectory():
         controller.send_linear_and_angular_velocities([v_x_adjusted, v_y_adjusted, v_z_adjusted], [0, 0, 0])
         sampling_frequency.sleep()
 
-if __name__ == "__main__":
-    rospy.init_node("controller_node", anonymous=True)
 
+def main():
+    rospy.init_node("controller_node", anonymous=True)
     controller.get_ready(2)
     controller.send_reset()
     controller.send_flat_trim()
@@ -129,3 +129,7 @@ if __name__ == "__main__":
     controller.send_land()
     save_positions()
     print("Done!")
+
+
+if __name__ == "__main__":
+    main()

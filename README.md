@@ -6,3 +6,5 @@ Author: Miguel Vargas
 Advisor: Gustavo Scaglia
 
 Second Advisor: Andr√©s Rosales
+
+© 2015 EPN All Rights Reserved
