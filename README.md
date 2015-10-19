@@ -1,5 +1,5 @@
 # ROSAutonomousFlight
-This is a project that has been done in order to obtain an engineering degree at National Polytechnic School (Quito, Ecuador).
+This is a project that has been done in order to obtain a degree in Electronics and Control engineering at the National Polytechnic School (Quito, Ecuador).
 
 Author: Miguel Vargas
 
